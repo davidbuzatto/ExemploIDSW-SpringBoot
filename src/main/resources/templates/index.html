@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cadatro de Estados</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/estilos.css}" type="text/css" rel="stylesheet"/>
+  </head>
+  <body>
+
+    <h1>Cadastro de Estados</h1>
+
+    <div>
+      <h3>Estados Cadastrados</h3>
+      <table class="tabelaListagem">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>Nome</th>
+            <th>Sigla</th>
+          </tr>
+        </thead>
+        <tbody id="bodyTabelaEstados">
+        </tbody>
+      </table>
+    </div>
+    
+    <div>
+      <h3>Dados do Estado</h3>
+      <form id="formEstado">
+        <table>
+          <tr>
+            <td class="alinharDireita">
+              <label for="txtNomeEstado">Nome:</label>
+            </td>
+            <td>
+              <input id="txtNomeEstado" size="20" maxlength="30" required/>
+            </td>
+          </tr>
+          <tr>
+            <td class="alinharDireita">
+              <label for="txtSiglaEstado">Sigla:</label>
+            </td>
+            <td>
+              <input id="txtSiglaEstado" size="3" maxlength="2" required/>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <div>
+        <button id="btnNovoEstado">Novo</button>
+        <button id="btnSalvarEstado">Salvar</button>
+        <button id="btnExcluirEstado">Excluir</button>
+      </div>
+    </div>
+
+    <script th:src="@{/js/estado.js}" type="module"></script>
+
+  </body>
+</html>

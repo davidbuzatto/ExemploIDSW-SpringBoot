@@ -1,0 +1,41 @@
+body {
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    background-color: #FFFFFF;
+}
+
+a {
+    color: #0484AE;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+
+.tabelaListagem {
+    background: #000000;
+}
+
+.tabelaListagem th {
+    background: #EEEEEE;
+    padding: 5px;
+}
+
+.tabelaListagem tr:nth-child(even) {
+    background: #c4e1ff;
+}
+
+.tabelaListagem tr:nth-child(odd) {
+    background: #FFFFFF;
+}
+
+.tabelaListagem td {
+    padding: 5px;
+}
+
+.alinharDireita {
+    text-align: right;
+}
