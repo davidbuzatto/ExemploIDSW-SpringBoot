@@ -1,28 +1,26 @@
-import * as ModuloCidade from "./cidade.js";
-
-let estados;
-let estadoSelecionado;
+let cidades;
+let cidadeSelecionada;
 
 let bodyTabela;
 
 let form;
 let txtNome;
-let txtSigla;
+let selEstado;
 let btnNovo;
 let btnSalvar;
 let btnExcluir;
 
 function iniciar() {
     
-    bodyTabela = document.getElementById( "bodyTabelaEstados" );
+    bodyTabela = document.getElementById( "bodyTabelaCidades" );
     
-    form = document.getElementById( "formEstado" );
-    txtNome = document.getElementById( "txtNomeEstado" );
-    txtSigla = document.getElementById( "txtSiglaEstado" );
+    form = document.getElementById( "formCidade" );
+    txtNome = document.getElementById( "txtNomeCidade" );
+    selEstado = document.getElementById( "selEstadoCidade" );
     
-    btnNovo = document.getElementById( "btnNovoEstado" );
-    btnSalvar = document.getElementById( "btnSalvarEstado" );
-    btnExcluir = document.getElementById( "btnExcluirEstado" );
+    btnNovo = document.getElementById( "btnNovaCidade" );
+    btnSalvar = document.getElementById( "btnSalvarCidade" );
+    btnExcluir = document.getElementById( "btnExcluirCidade" );
     
     btnNovo.addEventListener( "click", event => {
         resetarFormulario();
@@ -42,10 +40,10 @@ function iniciar() {
 
 function carregar() {
     
-    estados = [];
-    estadoSelecionado = null;
+    cidades = [];
+    cidadeSelecionada = null;
     
-    fetch( "api/estados", {
+    fetch( "api/cidades", {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -67,33 +65,31 @@ function carregar() {
     }).then( data => {
         
         bodyTabela.innerHTML = "";
-        estados = data._embedded.estados;
+        cidades = data._embedded.cidades;
         
-        estados.forEach( ( estado, indice ) => {
+        cidades.forEach( ( cidade, indice ) => {
             
             const tr = document.createElement( "tr" );
             tr.dataset.indice = indice;
             
             const tId = document.createElement( "td" );
-            tId.innerHTML = estado.id;
+            tId.innerHTML = cidade.id;
             
             const tNome = document.createElement( "td" );
-            tNome.innerHTML = estado.nome;
+            tNome.innerHTML = cidade.nome;
             
-            const tSigla = document.createElement( "td" );
-            tSigla.innerHTML = estado.sigla;
+            const tEstado = document.createElement( "td" );
+            tEstado.innerHTML = cidade.estado.sigla;
             
             tr.addEventListener( "click", event => {
-                estadoSelecionado = estados[event.target.parentNode.dataset.indice];
+                cidadeSelecionada = cidades[event.target.parentNode.dataset.indice];
                 preencherFormulario();
             });
             
-            tr.append( tId, tNome, tSigla );
+            tr.append( tId, tNome, tEstado );
             bodyTabela.append( tr );
             
         });
-        
-        ModuloCidade.atualizarSelectEstados( estados );
         
     }).catch( error => {
         alert( error );
@@ -103,32 +99,32 @@ function carregar() {
 
 function preencherFormulario() {
     
-    txtNome.value = estadoSelecionado.nome;
-    txtSigla.value = estadoSelecionado.sigla;
+    txtNome.value = cidadeSelecionada.nome;
+    selEstado.value = cidadeSelecionada.estado.id;
     
 }
 
 function resetarFormulario() {
     form.reset();
-    estadoSelecionado = null;
+    cidadeSelecionada = null;
 }
 
 function salvar() {
     
     let obj = {};
     let metodo;
-    let url = "api/estados";
+    let url = "api/cidades";
     
-    // novo estado
-    if ( estadoSelecionado === null ) {
+    // nova cidade
+    if ( cidadeSelecionada === null ) {
         obj.nome = txtNome.value;
-        obj.sigla = txtSigla.value;
+        obj.estado = "api/estados/" + selEstado.value;
         metodo = "POST";
-    } else { // alterando um estado
+    } else { // alterando uma cidade
         obj.nome = txtNome.value;
-        obj.sigla = txtSigla.value;
+        obj.estado = "api/estados/" + selEstado.value;
         metodo = "PATCH";
-        url += `/${estadoSelecionado.id}`;
+        url += `/${cidadeSelecionada.id}`;
     }
     
     fetch( url, {
@@ -162,11 +158,11 @@ function salvar() {
 
 function excluir() {
     
-    if ( estadoSelecionado !== null ) {
+    if ( cidadeSelecionada !== null ) {
         
-        if ( confirm( "Deseja mesmo excluir o estado selecionado?" ) ) {
+        if ( confirm( "Deseja mesmo excluir a cidade selecionada?" ) ) {
 
-            fetch( `api/estados/${estadoSelecionado.id}`, {
+            fetch( `api/cidades/${cidadeSelecionada.id}`, {
                 method: "DELETE",
                 headers: {
                     "Accept": "application/json",
@@ -197,9 +193,25 @@ function excluir() {
         }
         
     } else {
-        alert( "Escolha um estado para excluir!" );
+        alert( "Escolha uma cidade para excluir!" );
     }
     
+}
+
+export function atualizarSelectEstados( estados ) {
+    
+    selEstado.innerHTML = "";
+    
+    estados.forEach( ( estado, indice ) => {
+            
+        const option = document.createElement( "option" );
+        option.value = estado.id;
+        option.innerHTML = estado.sigla;
+
+        selEstado.append( option );
+
+    });
+        
 }
 
 iniciar();

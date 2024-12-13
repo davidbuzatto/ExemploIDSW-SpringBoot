@@ -4,6 +4,10 @@ body {
     background-color: #FFFFFF;
 }
 
+h1 {
+    margin-top: 0px;
+}
+
 a {
     color: #0484AE;
     text-decoration: none;
@@ -37,5 +41,27 @@ a:hover {
 }
 
 .alinharDireita {
+    text-align: right;
+}
+
+.divContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.itemContainer {
+    padding: 10px;
+    background: #def0ff;
+    border: solid 2px #000000;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.divContainerTabela {
+    height: 200px;
+    overflow: scroll;
+}
+
+.divContainerBotoes {
     text-align: right;
 }
